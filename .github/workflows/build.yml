@@ -1,4 +1,4 @@
-name: release
+name: build
 
 on:
   workflow_run:
@@ -15,10 +15,5 @@ jobs:
     - uses: actions/checkout@main
     - name: Install poetry
       run: pipx install poetry
-    - name: Build and publish
+    - name: Build
       run: poetry build
-    - name: Create GitHub Release
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: "dist/*"
-        token: ${{ secrets.GITHUB_TOKEN }}
