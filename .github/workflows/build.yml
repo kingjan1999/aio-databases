@@ -1,14 +1,16 @@
 name: release
 
 on:
-  push:
-    tags: ['*']
+  workflow_run:
+    workflows: [tests]
+    branches: [master]
+    types: [completed]
 
 jobs:
-  release:
+
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    if: github.event.workflow_run.conclusion == 'success'
     steps:
     - uses: actions/checkout@main
     - name: Install poetry
@@ -19,3 +21,4 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: "dist/*"
+        token: ${{ secrets.GITHUB_TOKEN }}
